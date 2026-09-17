@@ -3,9 +3,13 @@
 <title>OSAKA FAMILY TRIP · 2026</title>
 <style>
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#fff7fb 0%,#f7f5ff 100%);font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;color:#302a30}.app{max-width:580px;margin:auto;min-height:100vh;padding-bottom:44px}.hero{padding:28px 20px 18px}.ey{font-size:11px;letter-spacing:.16em;color:#d96f98;font-weight:900}.hero h1{font-size:28px;line-height:1.15;margin:8px 0}.sub{color:#8a8088;font-size:13px;line-height:1.5}.tabs{display:flex;gap:8px;padding:0 16px 14px;overflow:auto;position:sticky;top:0;background:#fff9fcdd;backdrop-filter:blur(12px);z-index:5}.tab{border:1px solid #eee2e9;background:#fff;border-radius:999px;padding:9px 13px;font-weight:800;white-space:nowrap;color:#302a30}.tab.on{background:#302a30;color:#fff}.day{display:none;padding:0 16px}.day.on{display:block}.card{background:#fff;border:1px solid #eee2e9;border-radius:22px;padding:17px;margin:10px 0;box-shadow:0 10px 28px #5d405d12}.next{background:linear-gradient(135deg,#fff0f5,#fff)}.label{font-size:11px;color:#d96f98;font-weight:900;letter-spacing:.08em}.next h2{font-size:18px;margin:6px 0}.timeline .row{display:grid;grid-template-columns:65px 22px 1fr;gap:8px;padding-bottom:18px;position:relative}.timeline .row:not(:last-child):after{content:"";position:absolute;left:75px;top:18px;bottom:0;border-left:1px dashed #eadbe3;z-index:0}.time{font-size:12px;font-weight:900;color:#756b72;padding-top:3px}.dot{width:11px;height:11px;border-radius:50%;background:#e88eae;margin:5px auto;box-shadow:0 0 0 5px #fff0f5;z-index:1}.title{font-weight:850;font-size:14px}.desc{font-size:12px;color:#8a8088;line-height:1.45;margin-top:3px}.btn{display:inline-block;text-decoration:none;background:#eef5ff;color:#416da9;padding:8px 10px;border-radius:11px;font-size:11px;font-weight:850;margin:7px 5px 0 0}.btn.pink{background:#fff0f5;color:#b85b7b}.tag{display:inline-block;background:#fff0f5;color:#b85b7b;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:800;margin:4px 3px 0 0}.shop{border:1px solid #eee2e9;border-radius:15px;padding:11px;margin-top:8px}.shop b{font-size:12px}.shop span{display:block;color:#8a8088;font-size:11px;margin-top:3px;line-height:1.4}.food{border:1px solid #eee2e9;border-radius:14px;padding:10px;margin-top:7px}.food b{font-size:12px}.food span{display:block;color:#8a8088;font-size:11px;margin-top:2px}.note{background:#faf7f9;border-radius:14px;padding:11px;font-size:11px;color:#756b72;line-height:1.55;margin-top:9px}.choice{background:#fff9fc;border:1px dashed #e5cdd8;border-radius:15px;padding:11px;margin-top:9px}.choice b{font-size:12px}.foot{padding:20px;font-size:11px;color:#8a8088;line-height:1.65}.small{font-size:10px;color:#9a9097}
+
+/* expense */
+.expense-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.expense-grid .full{grid-column:1/-1}.field label{display:block;font-size:10px;font-weight:900;color:#756b72;margin:0 0 4px 2px}.field input,.field select{width:100%;border:1px solid #eadfe5;background:#fff;border-radius:12px;padding:10px;font:inherit;font-size:12px;color:#302a30;outline:none}.field input:focus,.field select:focus{border-color:#d96f98}.primary{border:0;background:#302a30;color:#fff;border-radius:12px;padding:11px 14px;font-weight:900;font-size:12px;width:100%;cursor:pointer}.danger{border:0;background:#fff0f5;color:#b85b7b;border-radius:9px;padding:6px 8px;font-weight:800;font-size:10px;cursor:pointer}.expense-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:11px}.expense-table th,.expense-table td{border-bottom:1px solid #eee2e9;padding:8px 4px;text-align:left;vertical-align:top}.expense-table th{font-size:10px;color:#8a8088}.amount{text-align:right!important;font-weight:900;white-space:nowrap}.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.summary-box{background:#faf7f9;border-radius:14px;padding:11px}.summary-box .k{font-size:10px;color:#8a8088}.summary-box .v{font-size:17px;font-weight:950;margin-top:2px}.subtabs{display:flex;gap:6px;overflow:auto;margin:10px 0}.subtab{border:1px solid #eee2e9;background:#fff;border-radius:999px;padding:8px 11px;font-size:10px;font-weight:900;white-space:nowrap}.subtab.on{background:#302a30;color:#fff}.empty{padding:20px;text-align:center;color:#9a9097;font-size:11px}.total-line{display:flex;justify-content:space-between;align-items:center;padding:4px 0}.total-line b{font-size:17px}.breakdown{margin-top:8px}.break-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed #eadbe3;font-size:11px}.break-row span:last-child{font-weight:900}.mini-actions{display:flex;gap:6px;margin-top:8px}.mini-actions button{flex:1;border:1px solid #eee2e9;background:#fff;border-radius:10px;padding:8px;font-size:10px;font-weight:850;cursor:pointer}.people-note{font-size:10px;color:#9a9097;margin-top:6px;line-height:1.4}
+@media(max-width:420px){.expense-grid{grid-template-columns:1fr}.expense-grid .full{grid-column:auto}.expense-table{font-size:10px}.expense-table th:nth-child(5),.expense-table td:nth-child(5){display:none}}
 </style></head><body><div class="app">
 <div class="hero"><div class="ey">OSAKA FAMILY TRIP · 2026</div><h1>🍜 식도락 × 🛍️ 쇼핑<br>09.23 — 09.26</h1><div class="sub">가족 7명 · 한 팀으로 움직이되, 쇼핑은 <b>유도리 있게 들락날락</b>하는 여행앱</div></div>
-<div class="tabs"><button class="tab on" onclick="day('d1',this)">DAY 1 🌙</button><button class="tab" onclick="day('d2',this)">DAY 2 🍁</button><button class="tab" onclick="day('d3',this)">DAY 3 🛍️🌇</button><button class="tab" onclick="day('d4',this)">DAY 4 ✈️</button></div>
+<div class="tabs"><button class="tab on" onclick="day('d1',this)">DAY 1 🌙</button><button class="tab" onclick="day('d2',this)">DAY 2 🍁</button><button class="tab" onclick="day('d3',this)">DAY 3 🛍️🌇</button><button class="tab" onclick="day('d4',this)">DAY 4 ✈️</button><button class="tab" onclick="day('expense',this)">💰 경비</button></div>
 
 <section id="d1" class="day on">
 <div class="card next"><div class="label">🔴 TODAY'S RULE</div><h2>오늘은 Dotonbori 한 권역만</h2><div class="sub">저녁 → 강변 크루즈 → 글리코 사진 → 돈키. 쇼핑은 <b>사고 싶은 사람만 20~40분 들락</b>하고 전원 복귀.</div><a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=Osaka+Teikoku+Hotel%2C+2-8-17+Nishishinsaibashi%2C+Osaka&destination=Osaka+Teikoku+Hotel%2C+2-8-17+Nishishinsaibashi%2C+Osaka&travelmode=walking&waypoints=Chibo+Dotonbori+Building%2C+1-5-5+Dotonbori%2C+Osaka%7CTazaemonbashi+Pier%2C+Dotonbori%2C+Osaka%7CDotonbori%2C+Osaka%7CDon+Quijote+Dotonbori%2C+7-13+Souemoncho%2C+Osaka" target="_blank">📍 오늘 동선</a></div>
@@ -40,5 +44,72 @@
 
 <section id="d4" class="day"><div class="card next"><div class="label">✈️ HOME DAY</div><h2>체크아웃 → KIX</h2><div class="sub">마지막 날에는 관광을 추가하지 않고 짐·여권·면세품만 체크.</div></div><div class="card timeline"><div class="row"><div class="time">AM</div><div class="dot"></div><div><div class="title">☕ 아침 → 체크아웃</div><div class="desc">쇼핑백/기념품 최종 확인.</div></div></div><div class="row"><div class="time">출발 전</div><div class="dot"></div><div><div class="title">🚆 KIX 이동</div><div class="desc">항공편 시간에 맞춰 공항 이동.</div></div></div></div></section>
 
+<section id="expense" class="day">
+<div class="card next"><div class="label">💰 TRIP EXPENSE</div><h2>여행 경비 기록</h2><div class="sub">쓴 돈을 바로 입력하고, <b>전체 · 사람별 · 날짜별 · 내역별</b>로 합계를 볼 수 있어.</div></div>
+<div class="card">
+<div class="expense-grid">
+<div class="field"><label>날짜</label><input id="exDate" type="date"></div>
+<div class="field"><label>사람</label><input id="exPerson" list="peopleList" placeholder="예: 민경"></div>
+<datalist id="peopleList"></datalist>
+<div class="field"><label>대분류</label><select id="exCategory"><option>식비</option><option>교통</option><option>숙박</option><option>쇼핑</option><option>관광/입장료</option><option>주류/카페</option><option>기타</option></select></div>
+<div class="field"><label>금액 (¥)</label><input id="exAmount" type="number" inputmode="numeric" min="0" step="1" placeholder="예: 3000"></div>
+<div class="field full"><label>실제 내역</label><input id="exDetail" placeholder="예: 치보 오코노미야키 / 돈키호테 과자"></div>
+<div class="field full"><label>메모</label><input id="exMemo" placeholder="예: 3명분 / 현금 / 공동비용 등"></div>
+<div class="full"><button class="primary" onclick="addExpense()">＋ 경비 추가</button><div class="people-note">※ 금액은 일본 엔(¥) 기준. 사람 이름은 원하는 표기로 자유롭게 입력하면 돼.</div></div>
+</div></div>
+
+<div class="card">
+<div class="label">📊 SUMMARY</div><h2 style="font-size:16px;margin:6px 0">합계 보기</h2>
+<div class="subtabs">
+<button class="subtab on" onclick="summaryMode('all',this)">전체</button>
+<button class="subtab" onclick="summaryMode('person',this)">사람별</button>
+<button class="subtab" onclick="summaryMode('date',this)">날짜별</button>
+<button class="subtab" onclick="summaryMode('category',this)">내역별</button>
+</div>
+<div class="summary-grid"><div class="summary-box"><div class="k">전체 지출</div><div class="v" id="exTotal">¥0</div></div><div class="summary-box"><div class="k">기록 건수</div><div class="v" id="exCount">0건</div></div></div>
+<div class="breakdown" id="exBreakdown"></div>
+</div>
+
+<div class="card"><div class="label">🧾 RECORDS</div><h2 style="font-size:16px;margin:6px 0">입력 내역</h2><div id="exRecords"></div></div>
+</section>
 <div class="foot"><b>📱 이 앱의 원칙</b><br>① 쇼핑 장소를 전부 도는 게 목표가 아님 · ② 신사이바시에서는 PARCO/Daimaru를 중심으로 보고, 상점가는 취향 따라 들락 · ③ GU는 선택사항 · ④ EDION에서 대형 쇼핑을 마무리 · ⑤ 17:20 Tennoji 도착은 고정.<br><br><span class="small">매장/운영시간·예약은 여행 직전 공식 페이지에서 한 번 더 확인하세요. Google Maps 버튼은 별도 API 없이 지도/경로 화면으로 연결됩니다.</span></div>
-</div><script>function day(id,b){document.querySelectorAll('.day').forEach(x=>x.classList.remove('on'));document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));document.getElementById(id).classList.add('on');b.classList.add('on');scrollTo(0,0)}</script></body></html>
+</div><script>
+let expenses=JSON.parse(localStorage.getItem('osaka26_expenses')||'[]');
+let exMode='all';
+const people=['서울팀','부산팀','민경','엄마','아빠','아이'];
+function day(id,b){document.querySelectorAll('.day').forEach(x=>x.classList.remove('on'));document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));document.getElementById(id).classList.add('on');b.classList.add('on');scrollTo(0,0);if(id==='expense')renderExpenses();}
+function won(n){return '¥'+Number(n||0).toLocaleString('ko-KR')}
+function esc(s){return String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+function saveExpenses(){localStorage.setItem('osaka26_expenses',JSON.stringify(expenses));}
+function addExpense(){
+ const date=document.getElementById('exDate').value;
+ const person=document.getElementById('exPerson').value.trim();
+ const category=document.getElementById('exCategory').value;
+ const amount=Number(document.getElementById('exAmount').value);
+ const detail=document.getElementById('exDetail').value.trim();
+ const memo=document.getElementById('exMemo').value.trim();
+ if(!date||!detail||!amount){alert('날짜, 실제 내역, 금액은 입력해줘!');return;}
+ expenses.push({id:Date.now(),date,person:person||'미지정',category,detail,amount,memo});saveExpenses();
+ document.getElementById('exAmount').value='';document.getElementById('exDetail').value='';document.getElementById('exMemo').value='';renderExpenses();
+}
+function deleteExpense(id){expenses=expenses.filter(x=>x.id!==id);saveExpenses();renderExpenses();}
+function summaryMode(mode,b){exMode=mode;document.querySelectorAll('.subtab').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderSummary();}
+function groupBy(key){const m={};expenses.forEach(x=>{const k=x[key]||'미지정';m[k]=(m[k]||0)+Number(x.amount||0)});return Object.entries(m).sort((a,b)=>b[1]-a[1]);}
+function renderSummary(){
+ const total=expenses.reduce((a,x)=>a+Number(x.amount||0),0);document.getElementById('exTotal').textContent=won(total);document.getElementById('exCount').textContent=expenses.length+'건';
+ const box=document.getElementById('exBreakdown');
+ if(exMode==='all'){box.innerHTML='<div class="note">현재까지 입력된 모든 경비의 총합이 표시돼.</div>';return;}
+ const key=exMode==='person'?'person':exMode==='date'?'date':'category';
+ const rows=groupBy(key);box.innerHTML=rows.length?rows.map(([k,v])=>`<div class="break-row"><span>${esc(k)}</span><span>${won(v)}</span></div>`).join(''):'<div class="empty">아직 기록이 없어.</div>';
+}
+function renderExpenses(){
+ const dl=document.getElementById('peopleList');dl.innerHTML=people.map(p=>`<option value="${p}">`).join('');
+ const today=new Date();if(!document.getElementById('exDate').value)document.getElementById('exDate').value='2026-09-23';
+ renderSummary();
+ const box=document.getElementById('exRecords');
+ if(!expenses.length){box.innerHTML='<div class="empty">아직 입력한 경비가 없어.<br>위에서 하나씩 추가하면 여기에 쌓여!</div>';return;}
+ const sorted=[...expenses].sort((a,b)=>a.date.localeCompare(b.date)||a.id-b.id);
+ box.innerHTML='<table class="expense-table"><thead><tr><th>날짜</th><th>내역</th><th>사람</th><th class="amount">금액</th><th>메모</th><th></th></tr></thead><tbody>'+sorted.map(x=>`<tr><td>${esc(x.date.slice(5).replace('-','.'))}</td><td><b>${esc(x.detail)}</b><br><span class="small">${esc(x.category)}</span></td><td>${esc(x.person)}</td><td class="amount">${won(x.amount)}</td><td>${esc(x.memo||'')}</td><td><button class="danger" onclick="deleteExpense(${x.id})">삭제</button></td></tr>`).join('')+'</tbody></table>';
+}
+document.addEventListener('DOMContentLoaded',()=>{renderExpenses();});
+</script></body></html>
