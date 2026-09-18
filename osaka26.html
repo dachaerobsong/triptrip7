@@ -10,6 +10,7 @@
 </style></head><body><div class="app">
 <div class="hero"><div class="ey">OSAKA FAMILY TRIP · 2026</div><h1>🍜 식도락 × 🛍️ 쇼핑<br>09.23 — 09.26</h1><div class="sub">가족 7명 · 한 팀으로 움직이되, 쇼핑은 <b>유도리 있게 들락날락</b>하는 여행앱</div></div>
 <div class="tabs"><button class="tab on" onclick="day('d1',this)">DAY 1 🌙</button><button class="tab" onclick="day('d2',this)">DAY 2 🍁</button><button class="tab" onclick="day('d3',this)">DAY 3 🛍️🌇</button><button class="tab" onclick="day('d4',this)">DAY 4 ✈️</button><button class="tab" onclick="day('expense',this)">💰 경비</button></div>
+<div style="padding:0 16px 6px" class="small"><span id="itinSyncStatus"></span> <span style="cursor:pointer;text-decoration:underline" onclick="fetchItinerary()">🔄 일정표 새로고침</span></div>
 
 <section id="d1" class="day on">
 <div class="card next"><div class="label">🔴 TODAY'S RULE</div><h2>오늘은 Dotonbori 한 권역만</h2><div class="sub">저녁 → 강변 크루즈 → 글리코 사진 → 돈키. 쇼핑은 <b>사고 싶은 사람만 20~40분 들락</b>하고 전원 복귀.</div><a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=Osaka+Teikoku+Hotel%2C+2-8-17+Nishishinsaibashi%2C+Osaka&destination=Osaka+Teikoku+Hotel%2C+2-8-17+Nishishinsaibashi%2C+Osaka&travelmode=walking&waypoints=Chibo+Dotonbori+Building%2C+1-5-5+Dotonbori%2C+Osaka%7CTazaemonbashi+Pier%2C+Dotonbori%2C+Osaka%7CDotonbori%2C+Osaka%7CDon+Quijote+Dotonbori%2C+7-13+Souemoncho%2C+Osaka" target="_blank">📍 오늘 동선</a></div>
@@ -101,6 +102,82 @@ function day(id,b){
 }
 function won(n){return '¥'+Number(n||0).toLocaleString('ko-KR')}
 function esc(s){return String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+
+// ===================== 일정(Itinerary) 시트 연동 =====================
+function linkHtml_(label,url,style){
+  if(!label||!url)return'';
+  const cls=(style&&style.trim()==='pink')?'btn pink':'btn';
+  return `<a class="${cls}" href="${esc(url)}" target="_blank">${label}</a>`;
+}
+function tagsHtml_(tagsStr){
+  if(!tagsStr)return'';
+  const tags=tagsStr.split(',').map(t=>t.trim()).filter(Boolean);
+  if(!tags.length)return'';
+  return '<div>'+tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')+'</div>';
+}
+function childHtml_(child){
+  if(child.kind==='choice'){
+    return `<div class="choice"><b>${child.title||''}</b><br><span class="small">${child.desc||''}</span></div>`;
+  }
+  const cls=child.kind==='shop'?'shop':'food';
+  return `<div class="${cls}"><b>${child.title||''}</b><span>${child.desc||''}</span>${linkHtml_(child.link1_label,child.link1_url,child.link1_style)}${linkHtml_(child.link2_label,child.link2_url,child.link2_style)}</div>`;
+}
+function topItemHtml_(item,children){
+  const kids=children.filter(c=>String(c.parent)===String(item.order)).sort((a,b)=>Number(a.order)-Number(b.order));
+  if(item.kind==='highlight'||item.kind==='plain'){
+    const cardCls=item.kind==='highlight'?'card next':'card';
+    const h2Attr=item.kind==='plain'?' style="font-size:16px;margin:6px 0"':'';
+    let inner='';
+    if(item.label)inner+=`<div class="label">${esc(item.label)}</div>`;
+    inner+=`<h2${h2Attr}>${item.title||''}</h2>`;
+    if(item.desc)inner+=`<div class="sub">${item.desc}</div>`;
+    inner+=linkHtml_(item.link1_label,item.link1_url,item.link1_style);
+    inner+=linkHtml_(item.link2_label,item.link2_url,item.link2_style);
+    inner+=kids.map(childHtml_).join('');
+    return `<div class="${cardCls}">${inner}</div>`;
+  }
+  if(item.kind==='row'){
+    let inner=`<div class="title">${item.title||''}</div>`;
+    if(item.desc)inner+=`<div class="desc">${item.desc}</div>`;
+    inner+=tagsHtml_(item.tags);
+    inner+=kids.map(childHtml_).join('');
+    inner+=linkHtml_(item.link1_label,item.link1_url,item.link1_style);
+    inner+=linkHtml_(item.link2_label,item.link2_url,item.link2_style);
+    return `<div class="row"><div class="time">${esc(item.time||'')}</div><div class="dot"></div><div>${inner}</div></div>`;
+  }
+  return'';
+}
+function renderDayFromItinerary_(dayId,items){
+  const top=items.filter(x=>x.day===dayId&&(!x.parent)&&(x.kind==='highlight'||x.kind==='plain'||x.kind==='row')).sort((a,b)=>Number(a.order)-Number(b.order));
+  if(!top.length)return; // 시트에 해당 day 데이터가 없으면 기존 고정 내용을 그대로 둠
+  const children=items.filter(x=>x.day===dayId&&x.parent);
+  const cards=top.filter(x=>x.kind!=='row');
+  const rows=top.filter(x=>x.kind==='row');
+  let html=cards.map(c=>topItemHtml_(c,children)).join('');
+  if(rows.length)html+='<div class="card timeline">'+rows.map(r=>topItemHtml_(r,children)).join('')+'</div>';
+  const section=document.getElementById(dayId);
+  if(section)section.innerHTML=html;
+}
+async function fetchItinerary(){
+  if(!gasReady())return;
+  setSyncStatus2_('🔄 일정표 동기화 중…');
+  try{
+    const res=await fetch(GAS_URL+'?type=itinerary');
+    const data=await res.json();
+    if(data.ok&&data.items&&data.items.length){
+      ['d1','d2','d3','d4'].forEach(d=>renderDayFromItinerary_(d,data.items));
+      setSyncStatus2_('✅ 일정표 동기화 완료');
+    }else{
+      setSyncStatus2_('');
+    }
+  }catch(err){
+    setSyncStatus2_('⚠️ 일정표 동기화 실패 (고정된 내용 표시 중)');
+  }
+}
+function setSyncStatus2_(msg){
+  const el=document.getElementById('itinSyncStatus');
+  if(el)el.textContent=msg;
+}
 function saveExpenses(){localStorage.setItem('osaka26_expenses',JSON.stringify(expenses));}
 function setSyncStatus(msg){const el=document.getElementById('exSyncStatus');if(el)el.textContent=msg;}
 function gasReady(){return GAS_URL && !GAS_URL.includes('PUT_YOUR');}
@@ -205,6 +282,6 @@ function renderExpenses(){
     sorted.map(x=>`<tr><td>${esc(x.date.slice(5).replace('-','.'))}</td><td><b>${x.type==='income'?'수입':'지출'}</b></td><td><b>${esc(x.detail)}</b><br><span class="small">${esc(x.memo||'')}</span></td><td>${esc(x.person)}</td><td class="amount">${won(x.amount)}</td><td>${esc(x.category)}</td><td><button class="danger" onclick="deleteExpense('${esc(x.id)}')">삭제</button></td></tr>`).join('')+
     '</tbody></table>';
 }
-document.addEventListener('DOMContentLoaded',()=>{renderExpenses();syncFromServer();});
+document.addEventListener('DOMContentLoaded',()=>{renderExpenses();syncFromServer();fetchItinerary();});
 
 </script></body></html>
