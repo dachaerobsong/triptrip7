@@ -9,6 +9,14 @@
 .food{border-left:3px solid #e88eae}.cafe{border-left:3px solid #d9a441}.shop{border-left:3px solid #6f9fd8}
 /* 길어지는 동선 항목을 접고 펼치기 + 들여쓰기 가이드라인 */
 .fold{margin-top:8px}.fold>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;font-weight:850;font-size:12px;color:#756b72;padding:4px 2px}.fold>summary::-webkit-details-marker{display:none}.fold>summary:before{content:'▸';font-size:10px;color:#c48298;display:inline-block;transition:transform .15s}.fold[open]>summary:before{transform:rotate(90deg)}.fold-body{padding-left:13px;margin-top:4px;border-left:2px solid #f3e3ea}
+/* 보류/검토중(확정 아님) 표시: tags 칸에 '보류'라고 적으면 흐리게 + 칩 표시 */
+.tentative{opacity:.5}
+.pending-tag{display:inline-block;background:#eef0f2;color:#8b939b;font-size:9px;font-weight:800;padding:3px 7px;border-radius:999px;margin-left:6px;vertical-align:middle;white-space:nowrap}
+/* 대안 동선(route) 탭 — 시트에 route(A/B 등), route_label(선택) 칸을 추가하면 같은 지점에서 두 동선을 비교 가능 */
+.route-group{margin-top:2px}
+.rtabs{display:flex;gap:6px;margin:2px 0 12px}
+.rtab{border:1px solid #eee2e9;background:#fff;border-radius:999px;padding:6px 12px;font-size:10.5px;font-weight:850;color:#8a8088;cursor:pointer}
+.rtab.on{background:#302a30;color:#fff;border-color:#302a30}
 
 /* expense */
 .expense-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.expense-grid .full{grid-column:1/-1}.field label{display:block;font-size:10px;font-weight:900;color:#756b72;margin:0 0 4px 2px}.field input,.field select{width:100%;border:1px solid #eadfe5;background:#fff;border-radius:12px;padding:10px;font:inherit;font-size:12px;color:#302a30;outline:none}.field input:focus,.field select:focus{border-color:#d96f98}.primary{border:0;background:#302a30;color:#fff;border-radius:12px;padding:11px 14px;font-weight:900;font-size:12px;width:100%;cursor:pointer}.danger{border:0;background:#fff0f5;color:#b85b7b;border-radius:9px;padding:6px 8px;font-weight:800;font-size:10px;cursor:pointer}.expense-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:11px}.expense-table th,.expense-table td{border-bottom:1px solid #eee2e9;padding:8px 4px;text-align:left;vertical-align:top}.expense-table th{font-size:10px;color:#8a8088}.amount{text-align:right!important;font-weight:900;white-space:nowrap}.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.summary-box{background:#faf7f9;border-radius:14px;padding:11px}.summary-box.full{grid-column:1/-1}.summary-box .k{font-size:10px;color:#8a8088}.summary-box .v{font-size:17px;font-weight:950;margin-top:2px}.subtabs{display:flex;gap:6px;overflow:auto;margin:10px 0}.subtab{border:1px solid #eee2e9;background:#fff;border-radius:999px;padding:8px 11px;font-size:10px;font-weight:900;white-space:nowrap}.subtab.on{background:#302a30;color:#fff}.empty{padding:20px;text-align:center;color:#9a9097;font-size:11px}.total-line{display:flex;justify-content:space-between;align-items:center;padding:4px 0}.total-line b{font-size:17px}.breakdown{margin-top:8px}.break-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed #eadbe3;font-size:11px}.break-row span:last-child{font-weight:900}.mini-actions{display:flex;gap:6px;margin-top:8px}.mini-actions button{flex:1;border:1px solid #eee2e9;background:#fff;border-radius:10px;padding:8px;font-size:10px;font-weight:850;cursor:pointer}.people-note{font-size:10px;color:#9a9097;margin-top:6px;line-height:1.4}
@@ -131,9 +139,26 @@ function linkHtml_(label,url,style){
   const cls=(style&&style.trim()==='pink')?'btn pink':'btn';
   return `<a class="${cls}" href="${esc(url)}" target="_blank">${label}</a>`;
 }
+// "보류/검토중" 같은 표시 — tags 칸(권장)이나 label 칸에 이 단어들 중 하나를 적으면
+// 그 항목/카드가 흐리게 표시되고 "검토 중" 칩이 붙음. 실제 확정 일정처럼 보이지 않게 하기 위함.
+const TENTATIVE_WORDS=['보류','후보','고려중','고려','검토중','검토','maybe','pending','choice'];
+function isTentativeText_(s){
+  const t=String(s||'').trim().toLowerCase();
+  if(!t)return false;
+  return TENTATIVE_WORDS.some(w=>t===w||t.includes(w));
+}
+function splitTags_(tagsStr){
+  return String(tagsStr||'').split(',').map(t=>t.trim()).filter(Boolean);
+}
+function isTentative_(item){
+  if(isTentativeText_(item.label))return true;
+  return splitTags_(item.tags).some(isTentativeText_);
+}
+function pendingChip_(item){
+  return isTentative_(item)?'<span class="pending-tag">🔍 검토 중</span>':'';
+}
 function tagsHtml_(tagsStr){
-  if(!tagsStr)return'';
-  const tags=tagsStr.split(',').map(t=>t.trim()).filter(Boolean);
+  const tags=splitTags_(tagsStr).filter(t=>!isTentativeText_(t));
   if(!tags.length)return'';
   return '<div>'+tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')+'</div>';
 }
@@ -145,13 +170,15 @@ function childKindCls_(kind){
   return'food';
 }
 function childHtml_(child){
+  const tentative=isTentative_(child);
+  const pending=pendingChip_(child);
   if(child.kind==='choice'){
-    const badge=child.label?`<span class="choice-badge">${esc(child.label)}</span>`:'';
-    return `<div class="choice"><div class="choice-head">${badge}<b>${child.title||''}</b></div><span class="small">${child.desc||''}</span></div>`;
+    const badge=(child.label&&!isTentativeText_(child.label))?`<span class="choice-badge">${esc(child.label)}</span>`:'';
+    return `<div class="choice${tentative?' tentative':''}"><div class="choice-head">${badge}<b>${child.title||''}</b>${pending}</div><span class="small">${child.desc||''}</span></div>`;
   }
   const cls=childKindCls_(child.kind);
   const links=linkHtml_(child.link1_label,child.link1_url,child.link1_style)+linkHtml_(child.link2_label,child.link2_url,child.link2_style);
-  return `<div class="${cls}"><b>${child.title||''}</b><span>${child.desc||''}</span>${links?`<div class="actions">${links}</div>`:''}</div>`;
+  return `<div class="${cls}${tentative?' tentative':''}"><b>${child.title||''}</b>${pending}<span>${child.desc||''}</span>${links?`<div class="actions">${links}</div>`:''}</div>`;
 }
 function foldLabel_(kids){
   const n=kids.length;
@@ -168,11 +195,11 @@ function foldLabel_(kids){
 function topItemHtml_(item,children){
   const kids=children.filter(c=>String(c.parent)===String(item.order)).sort((a,b)=>Number(a.order)-Number(b.order));
   if(item.kind==='highlight'||item.kind==='plain'){
-    const cardCls=item.kind==='highlight'?'card next':'card';
+    const cardCls=(item.kind==='highlight'?'card next':'card')+(isTentative_(item)?' tentative':'');
     const h2Attr=item.kind==='plain'?' style="font-size:16px;margin:6px 0"':'';
     let inner='';
-    if(item.label)inner+=`<div class="label">${esc(item.label)}</div>`;
-    inner+=`<h2${h2Attr}>${item.title||''}</h2>`;
+    if(item.label&&!isTentativeText_(item.label))inner+=`<div class="label">${esc(item.label)}</div>`;
+    inner+=`<h2${h2Attr}>${item.title||''}${pendingChip_(item)}</h2>`;
     if(item.desc)inner+=`<div class="sub">${item.desc}</div>`;
     const topLinks=linkHtml_(item.link1_label,item.link1_url,item.link1_style)+linkHtml_(item.link2_label,item.link2_url,item.link2_style);
     if(topLinks)inner+=`<div class="actions">${topLinks}</div>`;
@@ -183,7 +210,7 @@ function topItemHtml_(item,children){
   }
   if(item.kind==='row'){
     const isFixed=String(item.fixed||'').trim()!=='';
-    let inner=`<div class="title">${item.title||''}${isFixed?'<span class="fixed-badge">고정 시간</span>':''}</div>`;
+    let inner=`<div class="title">${item.title||''}${isFixed?'<span class="fixed-badge">고정 시간</span>':''}${pendingChip_(item)}</div>`;
     if(item.desc)inner+=`<div class="desc">${item.desc}</div>`;
     inner+=tagsHtml_(item.tags);
     if(kids.length>=1){
@@ -193,9 +220,48 @@ function topItemHtml_(item,children){
     if(rowLinks)inner+=`<div class="actions">${rowLinks}</div>`;
     const timeCls=isFixed?'time fixed':'time';
     const timeText=item.time||'';
-    return `<div class="row"><div class="${timeCls}">${esc(timeText)}</div><div class="dot"></div><div>${inner}</div></div>`;
+    return `<div class="row${isTentative_(item)?' tentative':''}"><div class="${timeCls}">${esc(timeText)}</div><div class="dot"></div><div>${inner}</div></div>`;
   }
   return'';
+}
+// 대안 동선(예: 이동→점심 vs 점심→이동) — 시트에 route(값 예: A/B), route_label(탭 이름, 선택) 칸을 추가하면
+// route 값이 있는 연속된 행들을 하나의 그룹으로 묶어 탭으로 전환해서 볼 수 있게 함
+function renderRowsHtml_(rows,children,dayId){
+  let html='';let lastSection=null;let gi=0;let i=0;
+  while(i<rows.length){
+    const r=rows[i];
+    const sec=String(r.section||'').trim();
+    if(sec&&sec!==lastSection){html+=`<div class="daypart">${esc(sec)}</div>`;}
+    if(sec)lastSection=sec;
+    if(String(r.route||'').trim()){
+      const group=[];
+      while(i<rows.length&&String(rows[i].route||'').trim()){group.push(rows[i]);i++;}
+      html+=renderRouteGroupHtml_(group,children,dayId,gi++);
+    }else{
+      html+=topItemHtml_(r,children);
+      i++;
+    }
+  }
+  return html;
+}
+function routeLabel_(group,rt){
+  const withLabel=group.find(r=>String(r.route).trim()===rt&&r.route_label);
+  return withLabel?withLabel.route_label:('동선 '+rt);
+}
+function renderRouteGroupHtml_(group,children,dayId,idx){
+  const routes=[...new Set(group.map(r=>String(r.route).trim()))];
+  const gid=`rg_${dayId}_${idx}`;
+  const tabs=routes.map((rt,ri)=>`<button class="rtab${ri===0?' on':''}" data-gid="${gid}" data-route="${esc(rt)}" onclick="selectRoute(this)">${esc(routeLabel_(group,rt))}</button>`).join('');
+  const panels=routes.map((rt,ri)=>{
+    const items=group.filter(r=>String(r.route).trim()===rt);
+    return `<div class="rpanel" data-gid="${gid}" data-route="${esc(rt)}"${ri===0?'':' style="display:none"'}>${items.map(r=>topItemHtml_(r,children)).join('')}</div>`;
+  }).join('');
+  return `<div class="route-group"><div class="rtabs">${tabs}</div>${panels}</div>`;
+}
+function selectRoute(btn){
+  const gid=btn.dataset.gid,rt=btn.dataset.route;
+  document.querySelectorAll(`.rtab[data-gid="${gid}"]`).forEach(b=>b.classList.toggle('on',b===btn));
+  document.querySelectorAll(`.rpanel[data-gid="${gid}"]`).forEach(p=>{p.style.display=(p.dataset.route===rt)?'':'none';});
 }
 function renderDayFromItinerary_(dayId,items){
   const top=items.filter(x=>x.day===dayId&&(!x.parent)&&(x.kind==='highlight'||x.kind==='plain'||x.kind==='row')).sort((a,b)=>Number(a.order)-Number(b.order));
@@ -205,17 +271,7 @@ function renderDayFromItinerary_(dayId,items){
   const rows=top.filter(x=>x.kind==='row');
   let html=cards.map(c=>topItemHtml_(c,children)).join('');
   if(rows.length){
-    let rowsHtml='';
-    let lastSection=null;
-    rows.forEach(r=>{
-      const sec=String(r.section||'').trim();
-      if(sec&&sec!==lastSection){
-        rowsHtml+=`<div class="daypart">${esc(sec)}</div>`;
-      }
-      if(sec)lastSection=sec;
-      rowsHtml+=topItemHtml_(r,children);
-    });
-    html+='<div class="card timeline">'+rowsHtml+'</div>';
+    html+='<div class="card timeline">'+renderRowsHtml_(rows,children,dayId)+'</div>';
   }
   const section=document.getElementById(dayId);
   if(section)section.innerHTML=html;
