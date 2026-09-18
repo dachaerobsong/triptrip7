@@ -48,7 +48,7 @@
 <div class="row"><div class="time"></div><div class="dot"></div><div><div class="title">🧸 선택: BIGSTEP / 아메리카무라</div><div class="desc">캐릭터·가챠·빈티지/스트리트 패션 관심자만. 전원 피곤하면 바로 난바로 이동.</div><a class="btn" href="https://www.google.com/maps/search/?api=1&query=Shinsaibashi+BIGSTEP%2C+1-6-14+Nishishinsaibashi%2C+Osaka" target="_blank">📍 BIGSTEP</a><a class="btn" href="https://www.google.com/maps/search/?api=1&query=gashacoco+Shinsaibashi+BIGSTEP" target="_blank">🎲 가챠</a></div></div>
 <div class="row"><div class="time"></div><div class="dot"></div><div><div class="title">🎮 EDION Namba</div><div class="desc">6F 가챠 약 200대 + 일본주/소주/와인, 7F Bandai/Capcom 등. 여기서 ‘마지막 대형 쇼핑’을 끝낸다.</div><a class="btn" href="https://www.google.com/maps/search/?api=1&query=EDION+Namba%2C+3-2-18+Namba%2C+Osaka" target="_blank">📍 Maps</a><a class="btn" href="https://www.edion.com/detail.html?p_cd=00000000315" target="_blank">🔗 EDION</a></div></div>
 <div class="row"><div class="time"></div><div class="dot"></div><div><div class="title">☕ 강제 휴식</div><div class="desc">카페/벤치/화장실. 쇼핑 추가 금지.</div></div></div>
-<div class="row"><div class="time fixed">⏰ 17:20까지</div><div class="dot"></div><div><div class="title">🚇 Namba → Tennoji 이동<span class="fixed-badge">고정 마감</span></div><div class="desc">Midosuji Line 직행. <b>17:20까지 하루카스 권역 도착</b>은 이날 유일한 마감 시간.</div><a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=EDION+Namba%2C+3-2-18+Namba%2C+Osaka&destination=Abeno+Harukas+300%2C+Osaka&travelmode=transit" target="_blank">🚇 경로</a></div></div>
+<div class="row"><div class="time fixed">⏰ 17:20까지</div><div class="dot"></div><div><div class="title">🚇 Namba → Tennoji 이동<span class="fixed-badge">고정 마감</span></div><div class="desc">Midosuji Line 직행. <b>17:20까지 하루카스 권역 도착</b>.</div><a class="btn" href="https://www.google.com/maps/dir/?api=1&origin=EDION+Namba%2C+3-2-18+Namba%2C+Osaka&destination=Abeno+Harukas+300%2C+Osaka&travelmode=transit" target="_blank">🚇 경로</a></div></div>
 
 <div class="daypart">🌇 저녁</div>
 <div class="row"><div class="time fixed">⏰ 17:30</div><div class="dot"></div><div><div class="title">🌇 Abeno Harukas 300 야경투어<span class="fixed-badge">고정 시간</span></div><div class="desc">17:51 일몰 기준 역산한 입장 시간. 해진 뒤 야경까지 보려면 입장 후 1시간 이상 여유 있게.</div><a class="btn" href="https://www.google.com/maps/search/?api=1&query=Abeno+Harukas+300%2C+Osaka" target="_blank">📍 Maps</a><a class="btn pink" href="https://www.abenoharukas-300.jp/en/ticket/" target="_blank">🎫 공식 티켓</a></div></div>
@@ -58,7 +58,7 @@
 <section id="d4" class="day"><div class="card next"><div class="label">✈️ HOME DAY</div><h2>체크아웃 → KIX</h2><div class="sub">마지막 날에는 관광을 추가하지 않고 짐·여권·면세품만 체크.</div></div><div class="card timeline">
 <div class="daypart">🌅 오전</div>
 <div class="row"><div class="time"></div><div class="dot"></div><div><div class="title">☕ 아침 → 체크아웃</div><div class="desc">쇼핑백/기념품 최종 확인.</div></div></div>
-<div class="row"><div class="time fixed">⏰ 7:45</div><div class="dot"></div><div><div class="title">🚆 KIX 이동<span class="fixed-badge">고정 시간</span></div><div class="desc">7시 45분 차량 픽업 예정. 이날 유일한 고정 기준.</div></div></div>
+<div class="row"><div class="time fixed">⏰ 7:45</div><div class="dot"></div><div><div class="title">🚆 KIX 이동<span class="fixed-badge">고정 시간</span></div><div class="desc">7시 45분 차량 픽업 예정.</div></div></div>
 </div></section>
 
 <section id="expense" class="day">
@@ -153,13 +153,16 @@ function topItemHtml_(item,children){
     return `<div class="${cardCls}">${inner}</div>`;
   }
   if(item.kind==='row'){
-    let inner=`<div class="title">${item.title||''}</div>`;
+    const isFixed=String(item.fixed||'').trim()!=='';
+    let inner=`<div class="title">${item.title||''}${isFixed?'<span class="fixed-badge">고정 시간</span>':''}</div>`;
     if(item.desc)inner+=`<div class="desc">${item.desc}</div>`;
     inner+=tagsHtml_(item.tags);
     inner+=kids.map(childHtml_).join('');
     inner+=linkHtml_(item.link1_label,item.link1_url,item.link1_style);
     inner+=linkHtml_(item.link2_label,item.link2_url,item.link2_style);
-    return `<div class="row"><div class="time">${esc(item.time||'')}</div><div class="dot"></div><div>${inner}</div></div>`;
+    const timeCls=isFixed?'time fixed':'time';
+    const timeText=isFixed?(item.time||''):'';
+    return `<div class="row"><div class="${timeCls}">${esc(timeText)}</div><div class="dot"></div><div>${inner}</div></div>`;
   }
   return'';
 }
@@ -170,7 +173,19 @@ function renderDayFromItinerary_(dayId,items){
   const cards=top.filter(x=>x.kind!=='row');
   const rows=top.filter(x=>x.kind==='row');
   let html=cards.map(c=>topItemHtml_(c,children)).join('');
-  if(rows.length)html+='<div class="card timeline">'+rows.map(r=>topItemHtml_(r,children)).join('')+'</div>';
+  if(rows.length){
+    let rowsHtml='';
+    let lastSection=null;
+    rows.forEach(r=>{
+      const sec=String(r.section||'').trim();
+      if(sec&&sec!==lastSection){
+        rowsHtml+=`<div class="daypart">${esc(sec)}</div>`;
+      }
+      if(sec)lastSection=sec;
+      rowsHtml+=topItemHtml_(r,children);
+    });
+    html+='<div class="card timeline">'+rowsHtml+'</div>';
+  }
   const section=document.getElementById(dayId);
   if(section)section.innerHTML=html;
 }
