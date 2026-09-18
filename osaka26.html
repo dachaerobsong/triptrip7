@@ -161,7 +161,7 @@ function topItemHtml_(item,children){
     inner+=linkHtml_(item.link1_label,item.link1_url,item.link1_style);
     inner+=linkHtml_(item.link2_label,item.link2_url,item.link2_style);
     const timeCls=isFixed?'time fixed':'time';
-    const timeText=isFixed?(item.time||''):'';
+    const timeText=item.time||'';
     return `<div class="row"><div class="${timeCls}">${esc(timeText)}</div><div class="dot"></div><div>${inner}</div></div>`;
   }
   return'';
