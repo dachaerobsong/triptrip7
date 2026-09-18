@@ -4,6 +4,11 @@
 <style>
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#fff7fb 0%,#f7f5ff 100%);font-family:system-ui,-apple-system,"Noto Sans KR",sans-serif;color:#302a30}.app{max-width:580px;margin:auto;min-height:100vh;padding-bottom:44px}.hero{padding:28px 20px 18px}.ey{font-size:11px;letter-spacing:.16em;color:#d96f98;font-weight:900}.hero h1{font-size:28px;line-height:1.15;margin:8px 0}.sub{color:#8a8088;font-size:13px;line-height:1.5}.tabs{display:flex;gap:8px;padding:0 16px 14px;overflow:auto;position:sticky;top:0;background:#fff9fcdd;backdrop-filter:blur(12px);z-index:5}.tab{border:1px solid #eee2e9;background:#fff;border-radius:999px;padding:9px 13px;font-weight:800;white-space:nowrap;color:#302a30}.tab.on{background:#302a30;color:#fff}.day{display:none;padding:0 16px}.day.on{display:block}.card{background:#fff;border:1px solid #eee2e9;border-radius:22px;padding:17px;margin:10px 0;box-shadow:0 10px 28px #5d405d12}.next{background:linear-gradient(135deg,#fff0f5,#fff)}.label{font-size:11px;color:#d96f98;font-weight:900;letter-spacing:.08em}.next h2{font-size:18px;margin:6px 0}.timeline .row{display:grid;grid-template-columns:65px 22px 1fr;gap:8px;padding-bottom:18px;position:relative}.timeline .row:not(:last-child):after{content:"";position:absolute;left:75px;top:18px;bottom:0;border-left:1px dashed #eadbe3;z-index:0}.time{font-size:12px;font-weight:900;color:#756b72;padding-top:3px}.dot{width:11px;height:11px;border-radius:50%;background:#e88eae;margin:5px auto;box-shadow:0 0 0 5px #fff0f5;z-index:1}.title{font-weight:850;font-size:14px}.desc{font-size:12px;color:#8a8088;line-height:1.45;margin-top:3px}.btn{display:inline-block;text-decoration:none;background:#eef5ff;color:#416da9;padding:8px 10px;border-radius:11px;font-size:11px;font-weight:850;margin:7px 5px 0 0}.btn.pink{background:#fff0f5;color:#b85b7b}.tag{display:inline-block;background:#fff0f5;color:#b85b7b;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:800;margin:4px 3px 0 0}.shop{border:1px solid #eee2e9;border-radius:15px;padding:11px;margin-top:8px}.shop b{font-size:12px}.shop span{display:block;color:#8a8088;font-size:11px;margin-top:3px;line-height:1.4}.food{border:1px solid #eee2e9;border-radius:14px;padding:10px;margin-top:7px}.food b{font-size:12px}.food span{display:block;color:#8a8088;font-size:11px;margin-top:2px}.note{background:#faf7f9;border-radius:14px;padding:11px;font-size:11px;color:#756b72;line-height:1.55;margin-top:9px}.choice{background:#fff9fc;border:1px dashed #e5cdd8;border-radius:15px;padding:11px;margin-top:9px}.choice b{font-size:12px}.foot{padding:20px;font-size:11px;color:#8a8088;line-height:1.65}.small{font-size:10px;color:#9a9097}
 .daypart{display:inline-block;font-size:12px;font-weight:900;color:#b85b7b;background:#fff0f5;padding:5px 12px;border-radius:999px;margin:16px 0 8px}.timeline .daypart:first-child{margin-top:2px}.time.fixed{color:#c81657;font-weight:950}.fixed-badge{display:inline-block;background:#ffe3ec;color:#c81657;font-weight:900;font-size:9px;padding:3px 7px;border-radius:8px;margin-left:6px;vertical-align:middle}
+/* 식사(food) vs 카페/간식(cafe) vs 매장(shop) 구분 + 카드 좌측 색 accent */
+.cafe{border:1px solid #f0e2cf;border-radius:14px;padding:10px;margin-top:7px;background:#fffaf0}.cafe b{font-size:12px}.cafe span{display:block;color:#8a8088;font-size:11px;margin-top:2px}
+.food{border-left:3px solid #e88eae}.cafe{border-left:3px solid #d9a441}.shop{border-left:3px solid #6f9fd8}
+/* 길어지는 동선 항목을 접고 펼치기 + 들여쓰기 가이드라인 */
+.fold{margin-top:8px}.fold>summary{cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;font-weight:850;font-size:12px;color:#756b72;padding:4px 2px}.fold>summary::-webkit-details-marker{display:none}.fold>summary:before{content:'▸';font-size:10px;color:#c48298;display:inline-block;transition:transform .15s}.fold[open]>summary:before{transform:rotate(90deg)}.fold-body{padding-left:13px;margin-top:4px;border-left:2px solid #f3e3ea}
 
 /* expense */
 .expense-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.expense-grid .full{grid-column:1/-1}.field label{display:block;font-size:10px;font-weight:900;color:#756b72;margin:0 0 4px 2px}.field input,.field select{width:100%;border:1px solid #eadfe5;background:#fff;border-radius:12px;padding:10px;font:inherit;font-size:12px;color:#302a30;outline:none}.field input:focus,.field select:focus{border-color:#d96f98}.primary{border:0;background:#302a30;color:#fff;border-radius:12px;padding:11px 14px;font-weight:900;font-size:12px;width:100%;cursor:pointer}.danger{border:0;background:#fff0f5;color:#b85b7b;border-radius:9px;padding:6px 8px;font-weight:800;font-size:10px;cursor:pointer}.expense-table{width:100%;border-collapse:collapse;margin-top:10px;font-size:11px}.expense-table th,.expense-table td{border-bottom:1px solid #eee2e9;padding:8px 4px;text-align:left;vertical-align:top}.expense-table th{font-size:10px;color:#8a8088}.amount{text-align:right!important;font-weight:900;white-space:nowrap}.summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.summary-box{background:#faf7f9;border-radius:14px;padding:11px}.summary-box.full{grid-column:1/-1}.summary-box .k{font-size:10px;color:#8a8088}.summary-box .v{font-size:17px;font-weight:950;margin-top:2px}.subtabs{display:flex;gap:6px;overflow:auto;margin:10px 0}.subtab{border:1px solid #eee2e9;background:#fff;border-radius:999px;padding:8px 11px;font-size:10px;font-weight:900;white-space:nowrap}.subtab.on{background:#302a30;color:#fff}.empty{padding:20px;text-align:center;color:#9a9097;font-size:11px}.total-line{display:flex;justify-content:space-between;align-items:center;padding:4px 0}.total-line b{font-size:17px}.breakdown{margin-top:8px}.break-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px dashed #eadbe3;font-size:11px}.break-row span:last-child{font-weight:900}.mini-actions{display:flex;gap:6px;margin-top:8px}.mini-actions button{flex:1;border:1px solid #eee2e9;background:#fff;border-radius:10px;padding:8px;font-size:10px;font-weight:850;cursor:pointer}.people-note{font-size:10px;color:#9a9097;margin-top:6px;line-height:1.4}
@@ -105,6 +110,7 @@
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbxjJvUfTapytX1TFMy6UN-FBE3k6URAPGpWW3hr1m0WRUE07huJdLue63cEZCUwymHR/exec';
 
 let expenses=JSON.parse(localStorage.getItem('osaka26_expenses')||'[]');
+let itinCache=JSON.parse(localStorage.getItem('osaka26_itin')||'null');
 let exMode='all';
 let syncing=false;
 
@@ -131,12 +137,31 @@ function tagsHtml_(tagsStr){
   if(!tags.length)return'';
   return '<div>'+tags.map(t=>`<span class="tag">${esc(t)}</span>`).join('')+'</div>';
 }
+// 시트의 kind 칸에 shop/food/cafe(또는 '카페','간식','디저트')/choice 중 하나를 적으면 됨
+function childKindCls_(kind){
+  const k=String(kind||'').trim().toLowerCase();
+  if(k==='shop'||k.includes('샵')||k.includes('매장'))return'shop';
+  if(k==='cafe'||k.includes('카페')||k.includes('간식')||k.includes('디저트'))return'cafe';
+  return'food';
+}
 function childHtml_(child){
   if(child.kind==='choice'){
     return `<div class="choice"><b>${child.title||''}</b><br><span class="small">${child.desc||''}</span></div>`;
   }
-  const cls=child.kind==='shop'?'shop':'food';
+  const cls=childKindCls_(child.kind);
   return `<div class="${cls}"><b>${child.title||''}</b><span>${child.desc||''}</span>${linkHtml_(child.link1_label,child.link1_url,child.link1_style)}${linkHtml_(child.link2_label,child.link2_url,child.link2_style)}</div>`;
+}
+function foldLabel_(kids){
+  const n=kids.length;
+  const set=new Set(kids.map(k=>k.kind==='choice'?'choice':childKindCls_(k.kind)));
+  if(set.size===1){
+    const only=[...set][0];
+    if(only==='food')return`🍴 식사 후보 ${n}곳 보기`;
+    if(only==='cafe')return`☕ 카페·간식 후보 ${n}곳 보기`;
+    if(only==='shop')return`🛍️ 매장 ${n}곳 보기`;
+    if(only==='choice')return`⭐ 선택지 ${n}개 보기`;
+  }
+  return`📋 옵션 ${n}개 보기`;
 }
 function topItemHtml_(item,children){
   const kids=children.filter(c=>String(c.parent)===String(item.order)).sort((a,b)=>Number(a.order)-Number(b.order));
@@ -149,7 +174,11 @@ function topItemHtml_(item,children){
     if(item.desc)inner+=`<div class="sub">${item.desc}</div>`;
     inner+=linkHtml_(item.link1_label,item.link1_url,item.link1_style);
     inner+=linkHtml_(item.link2_label,item.link2_url,item.link2_style);
-    inner+=kids.map(childHtml_).join('');
+    if(kids.length>=2){
+      inner+=`<details class="fold"><summary>${foldLabel_(kids)}</summary><div class="fold-body">${kids.map(childHtml_).join('')}</div></details>`;
+    }else{
+      inner+=kids.map(childHtml_).join('');
+    }
     return `<div class="${cardCls}">${inner}</div>`;
   }
   if(item.kind==='row'){
@@ -157,7 +186,11 @@ function topItemHtml_(item,children){
     let inner=`<div class="title">${item.title||''}${isFixed?'<span class="fixed-badge">고정 시간</span>':''}</div>`;
     if(item.desc)inner+=`<div class="desc">${item.desc}</div>`;
     inner+=tagsHtml_(item.tags);
-    inner+=kids.map(childHtml_).join('');
+    if(kids.length>=2){
+      inner+=`<details class="fold"><summary>${foldLabel_(kids)}</summary><div class="fold-body">${kids.map(childHtml_).join('')}</div></details>`;
+    }else if(kids.length===1){
+      inner+=`<div class="fold-body">${kids.map(childHtml_).join('')}</div>`;
+    }
     inner+=linkHtml_(item.link1_label,item.link1_url,item.link1_style);
     inner+=linkHtml_(item.link2_label,item.link2_url,item.link2_style);
     const timeCls=isFixed?'time fixed':'time';
@@ -193,16 +226,20 @@ async function fetchItinerary(){
   if(!gasReady())return;
   setSyncStatus2_('🔄 일정표 동기화 중…');
   try{
-    const res=await fetch(GAS_URL+'?type=itinerary');
+    // 캐시 버스팅: 동일 URL을 GET으로 반복 호출하면 브라우저/네트워크 캐시가
+    // 예전 응답을 그대로 재사용해 "롤백"처럼 보이는 문제가 있었음 → _ts로 매번 다른 URL을 만들고 cache:'no-store'로 강제
+    const res=await fetch(GAS_URL+'?type=itinerary&_ts='+Date.now(),{cache:'no-store'});
     const data=await res.json();
     if(data.ok&&data.items&&data.items.length){
+      itinCache=data.items;
+      localStorage.setItem('osaka26_itin',JSON.stringify(itinCache));
       ['d1','d2','d3','d4'].forEach(d=>renderDayFromItinerary_(d,data.items));
-      setSyncStatus2_('✅ 일정표 동기화 완료');
+      setSyncStatus2_('✅ 일정표 동기화 완료 · '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}));
     }else{
       setSyncStatus2_('');
     }
   }catch(err){
-    setSyncStatus2_('⚠️ 일정표 동기화 실패 (고정된 내용 표시 중)');
+    setSyncStatus2_('⚠️ 일정표 동기화 실패 (마지막으로 동기화된 내용 표시 중)');
   }
 }
 function setSyncStatus2_(msg){
@@ -219,7 +256,7 @@ async function syncFromServer(){
   syncing=true;
   setSyncStatus('🔄 스프레드시트와 동기화 중…');
   try{
-    const res=await fetch(GAS_URL);
+    const res=await fetch(GAS_URL+'?_ts='+Date.now(),{cache:'no-store'});
     const data=await res.json();
     if(data.ok){
       expenses=data.expenses.map(x=>({...x,amount:Number(x.amount)||0}));
@@ -313,6 +350,11 @@ function renderExpenses(){
     sorted.map(x=>`<tr><td>${esc(x.date.slice(5).replace('-','.'))}</td><td><b>${x.type==='income'?'수입':'지출'}</b></td><td><b>${esc(x.detail)}</b><br><span class="small">${esc(x.memo||'')}</span></td><td>${esc(x.person)}</td><td class="amount">${won(x.amount)}</td><td>${esc(x.category)}</td><td><button class="danger" onclick="deleteExpense('${esc(x.id)}')">삭제</button></td></tr>`).join('')+
     '</tbody></table>';
 }
-document.addEventListener('DOMContentLoaded',()=>{renderExpenses();syncFromServer();fetchItinerary();});
+document.addEventListener('DOMContentLoaded',()=>{
+  renderExpenses();
+  if(itinCache&&itinCache.length){['d1','d2','d3','d4'].forEach(d=>renderDayFromItinerary_(d,itinCache));}
+  syncFromServer();
+  fetchItinerary();
+});
 
 </script></body></html>
