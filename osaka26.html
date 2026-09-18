@@ -156,10 +156,10 @@ function foldLabel_(kids){
   const set=new Set(kids.map(k=>k.kind==='choice'?'choice':childKindCls_(k.kind)));
   if(set.size===1){
     const only=[...set][0];
-    if(only==='food')return`🍴 식사 후보 ${n}곳 보기`;
-    if(only==='cafe')return`☕ 카페·간식 후보 ${n}곳 보기`;
-    if(only==='shop')return`🛍️ 매장 ${n}곳 보기`;
-    if(only==='choice')return`⭐ 선택지 ${n}개 보기`;
+    if(only==='food')return n===1?'🍴 식사 정보 보기':`🍴 식사 후보 ${n}곳 보기`;
+    if(only==='cafe')return n===1?'☕ 카페·간식 정보 보기':`☕ 카페·간식 후보 ${n}곳 보기`;
+    if(only==='shop')return n===1?'🛍️ 매장 정보 보기':`🛍️ 매장 ${n}곳 보기`;
+    if(only==='choice')return n===1?'⭐ 선택지 보기':`⭐ 선택지 ${n}개 보기`;
   }
   return`📋 옵션 ${n}개 보기`;
 }
@@ -174,10 +174,8 @@ function topItemHtml_(item,children){
     if(item.desc)inner+=`<div class="sub">${item.desc}</div>`;
     inner+=linkHtml_(item.link1_label,item.link1_url,item.link1_style);
     inner+=linkHtml_(item.link2_label,item.link2_url,item.link2_style);
-    if(kids.length>=2){
+    if(kids.length>=1){
       inner+=`<details class="fold"><summary>${foldLabel_(kids)}</summary><div class="fold-body">${kids.map(childHtml_).join('')}</div></details>`;
-    }else{
-      inner+=kids.map(childHtml_).join('');
     }
     return `<div class="${cardCls}">${inner}</div>`;
   }
@@ -186,10 +184,8 @@ function topItemHtml_(item,children){
     let inner=`<div class="title">${item.title||''}${isFixed?'<span class="fixed-badge">고정 시간</span>':''}</div>`;
     if(item.desc)inner+=`<div class="desc">${item.desc}</div>`;
     inner+=tagsHtml_(item.tags);
-    if(kids.length>=2){
+    if(kids.length>=1){
       inner+=`<details class="fold"><summary>${foldLabel_(kids)}</summary><div class="fold-body">${kids.map(childHtml_).join('')}</div></details>`;
-    }else if(kids.length===1){
-      inner+=`<div class="fold-body">${kids.map(childHtml_).join('')}</div>`;
     }
     inner+=linkHtml_(item.link1_label,item.link1_url,item.link1_style);
     inner+=linkHtml_(item.link2_label,item.link2_url,item.link2_style);
